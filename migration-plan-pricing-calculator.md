@@ -1,7 +1,7 @@
 # ModuleJET — Pricing Calculator Licensing Plan
 
 **Sản phẩm đầu tiên của ModuleJET**  
-**Ngày:** 11/03/2026 — **v4**  
+**Ngày:** 11/03/2026 — **v4.1**  
 **Tham chiếu:** Platform Master Plan v1.1, Dev Standard v2.2.0
 
 ---
@@ -18,14 +18,14 @@ Rebrand `hvn_pricing_calculator` v1.1.0 → `mj_pricing_calculator`, tích hợp
 
 | # | Tên | Billing | Tier | Key Prefix | Giá |
 |---|---|---|---|---|---|
-| 1 | PC Monthly Standard | Monthly | STD | `MJ-PRC-STD-` | $4.99/mo |
-| 2 | PC Annually Standard | Annually | STD | `MJ-PRC-STD-` | $39.99/yr |
-| 3 | PC Lifetime Standard | One Time | STD | `MJ-PRC-STD-` | $99.99 |
-| 4 | PC Monthly Professional | Monthly | PRO | `MJ-PRC-PRO-` | $14.99/mo |
-| 5 | PC Annually Professional | Annually | PRO | `MJ-PRC-PRO-` | $119.99/yr |
-| 6 | PC Lifetime Professional | One Time | PRO | `MJ-PRC-PRO-` | $299.99 |
-| 7 | PC Annually Open Source | Annually | OSS | `MJ-PRC-OSS-` | $179.99/yr |
-| 8 | PC Lifetime Open Source | One Time | OSS | `MJ-PRC-OSS-` | $449.99 |
+| 1 | PRC Monthly Standard | Monthly | STD | `MJ-PRC-STD-` | $4.99/mo |
+| 2 | PRC Annually Standard | Annually | STD | `MJ-PRC-STD-` | $39.99/yr |
+| 3 | PRC Lifetime Standard | One Time | STD | `MJ-PRC-STD-` | $99.99 |
+| 4 | PRC Monthly Professional | Monthly | PRO | `MJ-PRC-PRO-` | $14.99/mo |
+| 5 | PRC Annually Professional | Annually | PRO | `MJ-PRC-PRO-` | $119.99/yr |
+| 6 | PRC Lifetime Professional | One Time | PRO | `MJ-PRC-PRO-` | $299.99 |
+| 7 | PRC Annually Open Source | Annually | OSS | `MJ-PRC-OSS-` | $179.99/yr |
+| 8 | PRC Lifetime Open Source | One Time | OSS | `MJ-PRC-OSS-` | $449.99 |
 
 **Pricing formula:**
 - STD Monthly = base ($4.99)
@@ -120,8 +120,10 @@ namespace MJ\PricingCalculator;
 
 class LicenseChecker
 {
-    // ... (see Platform Plan section 6.1)
+    // ... (see Platform Plan v1.1 section 6.1)
+    // Regex: /^MJ-[A-Z]{3}-(STD|PRO|OSS)-/
     // getTier(): STD→standard, PRO→professional, OSS→opensource
+    // getProduct(): /^MJ-([A-Z]{3})-/
     // isCorrectProduct('PRC')
 }
 ```
@@ -195,5 +197,5 @@ mj_pricing_calculator/
 
 ---
 
-*Pricing Calculator Licensing Plan v4 — `MJ-PRC-{STD|PRO|OSS}`*  
-*Tham chiếu: Platform Master Plan v1.1 cho conventions, build system, infrastructure*
+*Pricing Calculator Licensing Plan v4.1 — `MJ-PRC-{STD|PRO|OSS}`*  
+*Tham chiếu: Platform Master Plan v1.1, Dev Standard v2.2.0*

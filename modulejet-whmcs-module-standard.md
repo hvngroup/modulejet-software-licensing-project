@@ -7,7 +7,7 @@ description: >
   frontend, pure CSS design system, AJAX patterns, file structure,
   code style, and licensing integration. All prefixes use 'mj'.
 author: ModuleJET
-version: "2.1.0"
+version: "2.2.0"
 website: https://modulejet.com
 ---
 
@@ -109,15 +109,15 @@ Dev constant: MJ_DEV
 ```
 MJ-{PRODUCT}-{TIER}-{random_key}
 
-PRODUCT:  2–4 uppercase letters (PC, IM, SM, ...)
-TIER:     STD / PRO / UEN (Standard / Professional / Open Source)
+PRODUCT:  3 uppercase letters (PRC, INV, SVM, ...)
+TIER:     STD / PRO / OSS (Standard / Professional / Open Source)
 ```
 
 | Product | Code | Example Key |
 |---|---|---|
-| Pricing Calculator | `PC` | `MJ-PC-STD-A1B2C3D4...` |
-| Invoice Manager | `IM` | `MJ-IM-PRO-X9Y8Z7...` |
-| Server Manager | `SM` | `MJ-SM-UEN-K5L6M7...` |
+| Pricing Calculator | `PRC` | `MJ-PRC-STD-A1B2C3D4...` |
+| Invoice Manager | `INV` | `MJ-INV-PRO-X9Y8Z7...` |
+| Server Manager | `SVM` | `MJ-SVM-OSS-K5L6M7...` |
 
 ---
 
@@ -363,16 +363,21 @@ class LicenseChecker
 
     public function getTier(): string
     {
-        if (preg_match('/^MJ-[A-Z]{2,4}-(STD|PRO|UEN)-/', $this->licenseKey, $m)) {
-            return match($m[1]) { 'STD'=>'standard', 'PRO'=>'professional', 'UEN'=>'Open Source', default=>'unknown' };
+        if (preg_match('/^MJ-[A-Z]{3}-(STD|PRO|OSS)-/', $this->licenseKey, $m)) {
+            return match($m[1]) { 'STD'=>'standard', 'PRO'=>'professional', 'OSS'=>'opensource', default=>'unknown' };
         }
         return 'unknown';
     }
 
     public function getProduct(): string
     {
-        preg_match('/^MJ-([A-Z]{2,4})-/', $this->licenseKey, $m);
+        preg_match('/^MJ-([A-Z]{3})-/', $this->licenseKey, $m);
         return $m[1] ?? 'UNKNOWN';
+    }
+
+    public function isCorrectProduct(string $expectedCode): bool
+    {
+        return $this->getProduct() === strtoupper($expectedCode);
     }
 }
 ```
@@ -459,34 +464,19 @@ $jsConfig = [
 ];
 $html .= '<script>window.mj{Abbr}Config=' . json_encode($jsConfig, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT) . ';</script>';
 $html .= '<script src="' . $base . '/js/mj-{abbr}.js?v=' . $ver . '"></script>';
-$html .= '<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>';
 ```
 
-### 7.4 Page Detection
+### 7.4 Page Detection Pattern
 
 ```php
 function mj_{abbr}_detectPage(): ?array
 {
-    $script = basename($_SERVER['SCRIPT_NAME'] ?? '');
+    $file = basename($_SERVER['SCRIPT_NAME']);
     $action = $_REQUEST['action'] ?? '';
-
-    return match(true) {
-        $script === 'configproducts.php' && $action === 'edit' => [
-            'type' => 'product_edit',
-            'product_id' => (int) ($_REQUEST['id'] ?? 0),
-            'inject' => ['pricing_calculator', 'config_options_manager'],
-        ],
-        $script === 'configproductoptions.php'
-            && !empty($_REQUEST['manageoptions']) && !empty($_REQUEST['cid']) => [
-            'type' => 'config_options',
-            'option_id' => (int) $_REQUEST['cid'],
-            'inject' => ['pricing_calculator'],
-        ],
-        $script === 'configaddons.php' && $action === 'manage' => [
-            'type' => 'addon_edit',
-            'addon_id' => (int) ($_REQUEST['id'] ?? 0),
-            'inject' => ['pricing_calculator'],
-        ],
+    return match (true) {
+        $file === 'configproducts.php' && $action === 'save'
+            => ['page' => 'product_edit', 'productId' => (int) ($_REQUEST['id'] ?? 0),
+                'inject' => ['pricing_calculator']],
         default => null,
     };
 }
@@ -978,6 +968,6 @@ Target: PHP 8.1+    Obfuscation: Level 4    Expiry: None    Callback: None
 ---
 
 *ModuleJET — https://modulejet.com*  
-*Standard v2.1.0 — March 2026*  
+*Standard v2.2.0 — March 2026*  
 *Prefix: `mj_` / `mj-` / `MJ` toàn bộ*  
 *Supersedes: HVN WHMCS Module Development Standard v1.0.0*

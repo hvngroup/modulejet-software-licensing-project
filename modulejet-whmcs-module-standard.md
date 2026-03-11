@@ -110,7 +110,7 @@ Dev constant: MJ_DEV
 MJ-{PRODUCT}-{TIER}-{random_key}
 
 PRODUCT:  2–4 uppercase letters (PC, IM, SM, ...)
-TIER:     STD / PRO / UEN (Standard / Professional / Unencoded)
+TIER:     STD / PRO / UEN (Standard / Professional / Open Source)
 ```
 
 | Product | Code | Example Key |
@@ -364,7 +364,7 @@ class LicenseChecker
     public function getTier(): string
     {
         if (preg_match('/^MJ-[A-Z]{2,4}-(STD|PRO|UEN)-/', $this->licenseKey, $m)) {
-            return match($m[1]) { 'STD'=>'standard', 'PRO'=>'professional', 'UEN'=>'unencoded', default=>'unknown' };
+            return match($m[1]) { 'STD'=>'standard', 'PRO'=>'professional', 'UEN'=>'Open Source', default=>'unknown' };
         }
         return 'unknown';
     }
@@ -607,7 +607,7 @@ function mjExampleData() {
 
 ```javascript
 var tier = CFG.licenseTier || 'standard';
-// Show "Powered by ModuleJET" for Standard tier, hide for Pro/Unencoded
+// Show "Powered by ModuleJET" for Standard tier, hide for Pro/Open Source
 ```
 
 ### 8.5 AJAX Rules
@@ -849,7 +849,7 @@ ionCube encode: `mj_{product_name}.php`, `hooks.php`, `lib/LicenseChecker.php`
 
 Keep plain: `assets/`, `templates/`, `lang/`, `whmcs.json`, `logo.png`, `LICENSE`
 
-### 13.2 Unencoded Build
+### 13.2 Open Source Build
 
 All files plain PHP. Same codebase, proprietary license.
 
@@ -972,7 +972,7 @@ Target: PHP 8.1+    Obfuscation: Level 4    Expiry: None    Callback: None
 □ Test: license check (Active, Invalid, Expired, Suspended, no key)
 □ Test: encoded build PHP 8.1/8.2/8.3 + WHMCS 8.x/9.x
 □ Write README.md
-□ Prepare build scripts (encoded + unencoded)
+□ Prepare build scripts (encoded + Open Source)
 ```
 
 ---

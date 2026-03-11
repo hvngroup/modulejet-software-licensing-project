@@ -42,7 +42,7 @@ Module hiện tại: `hvn_pricing_calculator` v1.1.0 (production, đã hoàn th�
 │                                                          │
 │  ┌─────────────────┐  ┌──────────────────────────────┐  │
 │  │ Client Portal    │  │ Download Manager              │  │
-│  │ (order, pay,     │  │ (encoded + unencoded          │  │
+│  │ (order, pay,     │  │ (encoded + Open Source          │  │
 │  │  manage license) │  │  packages)                    │  │
 │  └─────────────────┘  └──────────────────────────────┘  │
 └─────────────────────────────────────────────────────────┘
@@ -62,7 +62,7 @@ MJ-{PRODUCT}-{TIER}-{random_key}
 |---|---|---|
 | `MJ` | Cố định | Thương hiệu ModuleJET |
 | `{PRODUCT}` | `PC` = Pricing Calculator | Mã sản phẩm (2–4 ký tự) |
-| `{TIER}` | `STD` / `PRO` / `UEN` | Standard / Professional / Unencoded |
+| `{TIER}` | `STD` / `PRO` / `UEN` | Standard / Professional / Open Source |
 
 Ví dụ key: `MJ-PC-STD-A1B2C3D4E5F6G7H8...`
 
@@ -78,14 +78,14 @@ Sản phẩm tương lai: `MJ-IM-STD-` (Invoice Manager), `MJ-SM-PRO-` (Server M
 | 4 | Monthly Professional License | Monthly | ionCube | Unlimited | `MJ-PC-PRO-` | Khi còn active |
 | 5 | Annual Professional License | Annually | ionCube | Unlimited | `MJ-PC-PRO-` | Khi còn active |
 | 6 | Lifetime Professional License | One Time | ionCube | Unlimited | `MJ-PC-PRO-` | **Lifetime** |
-| 7 | Annual Unencoded License | Annually | Không mã hóa | Unlimited | `MJ-PC-UEN-` | Khi còn active |
-| 8 | Lifetime Unencoded License | One Time | Không mã hóa | Unlimited | `MJ-PC-UEN-` | **Lifetime** |
+| 7 | Annual Open Source License | Annually | Không mã hóa | Unlimited | `MJ-PC-UEN-` | Khi còn active |
+| 8 | Lifetime Open Source License | One Time | Không mã hóa | Unlimited | `MJ-PC-UEN-` | **Lifetime** |
 
-> **"Unencoded" ≠ Open Source.** License vẫn thương mại (proprietary). Khách mua quyền sử dụng source code không mã hóa, có thể đọc/tùy chỉnh nhưng **không được phân phối lại**.
+> **"Open Source" ≠ Open Source.** License vẫn thương mại (proprietary). Khách mua quyền sử dụng source code không mã hóa, có thể đọc/tùy chỉnh nhưng **không được phân phối lại**.
 
 ### 2.3 So sánh tính năng theo tier
 
-| Tính năng | Standard | Professional | Unencoded |
+| Tính năng | Standard | Professional | Open Source |
 |---|---|---|---|
 | Pricing Calculator Toolbar | ✅ | ✅ | ✅ |
 | Config Options Manager | ✅ | ✅ | ✅ |
@@ -104,7 +104,7 @@ Sản phẩm tương lai: `MJ-IM-STD-` (Invoice Manager), `MJ-SM-PRO-` (Server M
 |---|---|---|---|
 | Standard | $4.95/mo | $39.95/yr (~33% off) | $99.95 |
 | Professional | $9.95/mo | $79.95/yr (~33% off) | $199.95 |
-| Unencoded | — | $119.95/yr | $299.95 |
+| Open Source | — | $119.95/yr | $299.95 |
 
 ### 2.5 Support/Updates Policy
 
@@ -134,7 +134,7 @@ Triển khai: WHMCS tự quản lý qua product status. Lifetime = always Active
 Product Group: "ModuleJET — Pricing Calculator"
 ├── Standard: Monthly ($4.95) / Annual ($39.95) / Lifetime ($99.95)
 ├── Professional: Monthly ($9.95) / Annual ($79.95) / Lifetime ($199.95)
-└── Unencoded: Annual ($119.95) / Lifetime ($299.95)
+└── Open Source: Annual ($119.95) / Lifetime ($299.95)
 ```
 
 ### 3.3 Module Settings per product
@@ -154,7 +154,7 @@ Product Group: "ModuleJET — Pricing Calculator"
 - Key Prefix: `MJ-PC-PRO-`
 - Allow Domain Conflict: ✅ Yes (unlimited)
 
-**Unencoded (#7–8):**
+**Open Source (#7–8):**
 - Key Prefix: `MJ-PC-UEN-`
 - Allow Domain Conflict: ✅ Yes (unlimited)
 
@@ -163,7 +163,7 @@ Product Group: "ModuleJET — Pricing Calculator"
 | Download | Products | Require Active |
 |---|---|---|
 | `mj-pricing-calculator-encoded-v1.2.0.zip` | Standard #1–3, Professional #4–6 | ✅ |
-| `mj-pricing-calculator-unencoded-v1.2.0.zip` | Unencoded #7–8 | ✅ |
+| `mj-pricing-calculator-Open Source-v1.2.0.zip` | Open Source #7–8 | ✅ |
 
 ---
 
@@ -252,7 +252,7 @@ class LicenseChecker
             return match($m[1]) {
                 'STD' => 'standard',
                 'PRO' => 'professional',
-                'UEN' => 'unencoded',
+                'UEN' => 'Open Source',
                 default => 'unknown',
             };
         }
@@ -333,7 +333,7 @@ mj_pricing_calculator/
 └── README.md
 ```
 
-#### Unencoded
+#### Open Source
 
 Cùng cấu trúc, tất cả `.php` plain text. License vẫn proprietary.
 
@@ -366,8 +366,8 @@ Cùng cấu trúc, tất cả `.php` plain text. License vẫn proprietary.
 |---|---|
 | Standard → Professional | WHMCS Product Upgrade (prorate) |
 | Monthly → Annual/Lifetime | WHMCS Product Upgrade |
-| Any Encoded → Unencoded | WHMCS Product Upgrade (prorate) |
-| Unencoded Annual → Lifetime | WHMCS Product Upgrade |
+| Any Encoded → Open Source | WHMCS Product Upgrade (prorate) |
+| Open Source Annual → Lifetime | WHMCS Product Upgrade |
 
 ---
 
@@ -410,20 +410,20 @@ cd "./build/encoded"
 zip -r "../mj-pricing-calculator-encoded-v${VER}.zip" mj_pricing_calculator/
 ```
 
-### 7.2 Build unencoded
+### 7.2 Build Open Source
 
 ```bash
 #!/bin/bash
 SRC="./src/mj_pricing_calculator"
-OUT="./build/unencoded/mj_pricing_calculator"
+OUT="./build/Open Source/mj_pricing_calculator"
 VER="1.2.0"
 
-rm -rf "./build/unencoded" && mkdir -p "$OUT"
+rm -rf "./build/Open Source" && mkdir -p "$OUT"
 cp -r "$SRC/"* "$OUT/"
 cp ./licenses/COMMERCIAL.txt "$OUT/LICENSE"
 
-cd "./build/unencoded"
-zip -r "../mj-pricing-calculator-unencoded-v${VER}.zip" mj_pricing_calculator/
+cd "./build/Open Source"
+zip -r "../mj-pricing-calculator-Open Source-v${VER}.zip" mj_pricing_calculator/
 ```
 
 ### 7.3 Test matrix
@@ -510,11 +510,11 @@ mj-pricing-calculator/                 ← Repo root
 │
 ├── build/                             ← gitignored
 │   ├── mj-pricing-calculator-encoded-v1.2.0.zip
-│   └── mj-pricing-calculator-unencoded-v1.2.0.zip
+│   └── mj-pricing-calculator-Open Source-v1.2.0.zip
 │
 ├── scripts/
 │   ├── build-encoded.sh
-│   └── build-unencoded.sh
+│   └── build-Open Source.sh
 │
 ├── licenses/
 │   └── COMMERCIAL.txt
@@ -544,7 +544,7 @@ mj-pricing-calculator/                 ← Repo root
 ### Business
 - [ ] Payment gateways test OK
 - [ ] Welcome email có key + download link
-- [ ] TOS (bao gồm: Unencoded ≠ open source, cấm redistribute)
+- [ ] TOS (bao gồm: Open Source ≠ open source, cấm redistribute)
 - [ ] Refund Policy (30 ngày)
 - [ ] Support ticket system OK
 - [ ] Public license verification OK
